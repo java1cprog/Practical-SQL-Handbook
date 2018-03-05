@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net
 --
 -- Хост: localhost
--- Время создания: Мар 05 2018 г., 19:01
+-- Время создания: Мар 05 2018 г., 19:16
 -- Версия сервера: 5.6.37
 -- Версия PHP: 5.6.31
 
@@ -19,6 +19,17 @@ SET time_zone = "+00:00";
 --
 -- База данных: `bookbiz`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Дублирующая структура для представления `accounts`
+--
+CREATE TABLE IF NOT EXISTS `accounts` (
+`title` char(6)
+,`advance` decimal(10,0)
+,`gross_sales` decimal(20,0)
+);
 
 -- --------------------------------------------------------
 
@@ -69,6 +80,40 @@ INSERT INTO `authors` (`au_id`, `au_lname`, `au_fname`, `phone`, `address`, `cit
 -- --------------------------------------------------------
 
 --
+-- Дублирующая структура для представления `books`
+--
+CREATE TABLE IF NOT EXISTS `books` (
+`title_id` char(6)
+,`au_ord` tinyint(4)
+,`au_lname` varchar(40)
+,`au_fname` varchar(20)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Дублирующая структура для представления `categories`
+--
+CREATE TABLE IF NOT EXISTS `categories` (
+`Category` char(12)
+,`Average_Price` decimal(14,4)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Дублирующая структура для представления `cities`
+--
+CREATE TABLE IF NOT EXISTS `cities` (
+`Author` varchar(40)
+,`Authorcity` varchar(20)
+,`Pub` varchar(40)
+,`Pubcity` varchar(20)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `editors`
 --
 
@@ -103,6 +148,89 @@ INSERT INTO `editors` (`ed_id`, `ed_lname`, `ed_fname`, `ed_pos`, `phone`, `addr
 -- --------------------------------------------------------
 
 --
+-- Дублирующая структура для представления `highaverage`
+--
+CREATE TABLE IF NOT EXISTS `highaverage` (
+`au_id` char(11)
+,`title_id` char(6)
+,`pub_name` varchar(40)
+,`price` decimal(10,0)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Дублирующая структура для представления `highbandh`
+--
+CREATE TABLE IF NOT EXISTS `highbandh` (
+`au_id` char(11)
+,`title_id` char(6)
+,`pub_name` varchar(40)
+,`price` decimal(10,0)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Дублирующая структура для представления `hiprice`
+--
+CREATE TABLE IF NOT EXISTS `hiprice` (
+`title_id` char(6)
+,`title` varchar(80)
+,`type` char(12)
+,`pub_id` char(4)
+,`price` decimal(10,0)
+,`advance` decimal(10,0)
+,`ytd_sales` int(11)
+,`contract` bit(1)
+,`notes` varchar(200)
+,`pubdate` date
+);
+
+-- --------------------------------------------------------
+
+--
+-- Дублирующая структура для представления `number1`
+--
+CREATE TABLE IF NOT EXISTS `number1` (
+`au_lname` varchar(40)
+,`phone` char(12)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Дублирующая структура для представления `number2`
+--
+CREATE TABLE IF NOT EXISTS `number2` (
+`au_lname` varchar(40)
+,`phone` char(12)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Дублирующая структура для представления `number3`
+--
+CREATE TABLE IF NOT EXISTS `number3` (
+`au_lname` varchar(40)
+,`phone` char(12)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Дублирующая структура для представления `oaklanders`
+--
+CREATE TABLE IF NOT EXISTS `oaklanders` (
+`FirstName` varchar(20)
+,`LastName` varchar(40)
+,`Book` varchar(80)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `publishers`
 --
 
@@ -122,6 +250,17 @@ INSERT INTO `publishers` (`pub_id`, `pub_name`, `address`, `city`, `state`) VALU
 ('0736', 'New Age Books', '1 1st St', 'Boston', 'MA'),
 ('0877', 'Binnet & Hardley', '2 2nd Ave.', 'Washington', 'DC'),
 ('1389', 'Algodata Infosystems', '3 3rd Dr.', 'Berkeley', 'CA');
+
+-- --------------------------------------------------------
+
+--
+-- Дублирующая структура для представления `royaltychecks`
+--
+CREATE TABLE IF NOT EXISTS `royaltychecks` (
+`au_lname` varchar(40)
+,`au_fname` varchar(20)
+,`Total_Income` double
+);
 
 -- --------------------------------------------------------
 
@@ -408,6 +547,137 @@ INSERT INTO `titles` (`title_id`, `title`, `type`, `pub_id`, `price`, `advance`,
 ('TC3218', 'Onions, Leeks, and Garlic: Cooking Secrets of the Mediterranean', 'trad_cook', '0877', '41', '7000', 375, b'1', 'Profusely illustrated in color, this makes a wonderful gift book for a cuisine-oriented friend.', '1998-10-21'),
 ('TC4203', 'Fifty Years in Buckingham Palace Kitchens', 'trad_cook', '0877', '22', '4000', 15096, b'1', 'More anecdotes from the Queen''s favorite cook describing life among English royalty.  Recipes, techniques, tender vignettes.', '1998-06-12'),
 ('TC7777', 'Sushi, Anyone?', 'trad_cook', '0877', '30', '8000', 4095, b'1', 'Detailed instructions on improving your position in life by learning how to make authentic Japanese sushi in your spare time. 5-10% increase in number of friends per recipe reported from beta test. ', '1998-06-12');
+
+-- --------------------------------------------------------
+
+--
+-- Дублирующая структура для представления `titleview`
+--
+CREATE TABLE IF NOT EXISTS `titleview` (
+`title` varchar(80)
+,`au_ord` tinyint(4)
+,`au_lname` varchar(40)
+,`price` decimal(10,0)
+,`ytd_sales` int(11)
+,`pub_id` char(4)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Структура для представления `accounts`
+--
+DROP TABLE IF EXISTS `accounts`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `accounts` AS select `titles`.`title_id` AS `title`,`titles`.`advance` AS `advance`,(`titles`.`price` * `titles`.`ytd_sales`) AS `gross_sales` from `titles` where ((`titles`.`price` > 15) and (`titles`.`advance` > 5000));
+
+-- --------------------------------------------------------
+
+--
+-- Структура для представления `books`
+--
+DROP TABLE IF EXISTS `books`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `books` AS select `titles`.`title_id` AS `title_id`,`titleauthors`.`au_ord` AS `au_ord`,`authors`.`au_lname` AS `au_lname`,`authors`.`au_fname` AS `au_fname` from ((`authors` join `titles`) join `titleauthors`) where ((`authors`.`au_id` = `titleauthors`.`au_id`) and (`titles`.`title_id` = `titleauthors`.`title_id`));
+
+-- --------------------------------------------------------
+
+--
+-- Структура для представления `categories`
+--
+DROP TABLE IF EXISTS `categories`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `categories` AS select `titles`.`type` AS `Category`,avg(`titles`.`price`) AS `Average_Price` from `titles` group by `titles`.`type`;
+
+-- --------------------------------------------------------
+
+--
+-- Структура для представления `cities`
+--
+DROP TABLE IF EXISTS `cities`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `cities` AS select `authors`.`au_lname` AS `Author`,`authors`.`city` AS `Authorcity`,`publishers`.`pub_name` AS `Pub`,`publishers`.`city` AS `Pubcity` from (`authors` join `publishers`) where (`authors`.`city` = `publishers`.`city`);
+
+-- --------------------------------------------------------
+
+--
+-- Структура для представления `highaverage`
+--
+DROP TABLE IF EXISTS `highaverage`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `highaverage` AS select `authors`.`au_id` AS `au_id`,`titles`.`title_id` AS `title_id`,`publishers`.`pub_name` AS `pub_name`,`titles`.`price` AS `price` from (((`authors` join `titleauthors`) join `titles`) join `publishers`) where ((`authors`.`au_id` = `titleauthors`.`au_id`) and (`titles`.`title_id` = `titleauthors`.`title_id`) and (`titles`.`pub_id` = `publishers`.`pub_id`) and (`titles`.`price` > (select avg(`titles`.`price`) from `titles`)));
+
+-- --------------------------------------------------------
+
+--
+-- Структура для представления `highbandh`
+--
+DROP TABLE IF EXISTS `highbandh`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `highbandh` AS select `highaverage`.`au_id` AS `au_id`,`highaverage`.`title_id` AS `title_id`,`highaverage`.`pub_name` AS `pub_name`,`highaverage`.`price` AS `price` from `highaverage` where (`highaverage`.`pub_name` = 'Binnet & Hardley');
+
+-- --------------------------------------------------------
+
+--
+-- Структура для представления `hiprice`
+--
+DROP TABLE IF EXISTS `hiprice`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `hiprice` AS select `titles`.`title_id` AS `title_id`,`titles`.`title` AS `title`,`titles`.`type` AS `type`,`titles`.`pub_id` AS `pub_id`,`titles`.`price` AS `price`,`titles`.`advance` AS `advance`,`titles`.`ytd_sales` AS `ytd_sales`,`titles`.`contract` AS `contract`,`titles`.`notes` AS `notes`,`titles`.`pubdate` AS `pubdate` from `titles` where ((`titles`.`price` > 15) and (`titles`.`advance` > 5000));
+
+-- --------------------------------------------------------
+
+--
+-- Структура для представления `number1`
+--
+DROP TABLE IF EXISTS `number1`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `number1` AS select `authors`.`au_lname` AS `au_lname`,`authors`.`phone` AS `phone` from `authors` where (`authors`.`zip` like '94%');
+
+-- --------------------------------------------------------
+
+--
+-- Структура для представления `number2`
+--
+DROP TABLE IF EXISTS `number2`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `number2` AS select `number1`.`au_lname` AS `au_lname`,`number1`.`phone` AS `phone` from `number1` where (`number1`.`au_lname` > 'M');
+
+-- --------------------------------------------------------
+
+--
+-- Структура для представления `number3`
+--
+DROP TABLE IF EXISTS `number3`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `number3` AS select `number2`.`au_lname` AS `au_lname`,`number2`.`phone` AS `phone` from `number2` where (`number2`.`au_lname` = 'MacFeather');
+
+-- --------------------------------------------------------
+
+--
+-- Структура для представления `oaklanders`
+--
+DROP TABLE IF EXISTS `oaklanders`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `oaklanders` AS select `authors`.`au_fname` AS `FirstName`,`authors`.`au_lname` AS `LastName`,`titles`.`title` AS `Book` from ((`authors` join `titles`) join `titleauthors`) where ((`authors`.`au_id` = `titleauthors`.`au_id`) and (`titles`.`title_id` = `titleauthors`.`title_id`) and (`authors`.`city` = 'Oakland'));
+
+-- --------------------------------------------------------
+
+--
+-- Структура для представления `royaltychecks`
+--
+DROP TABLE IF EXISTS `royaltychecks`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `royaltychecks` AS select `authors`.`au_lname` AS `au_lname`,`authors`.`au_fname` AS `au_fname`,sum((((`titles`.`price` * `titles`.`ytd_sales`) * `roysched`.`royalty`) * `titleauthors`.`royaltyshare`)) AS `Total_Income` from (((`authors` join `titles`) join `titleauthors`) join `roysched`) where ((`authors`.`au_id` = `titleauthors`.`au_id`) and (`titles`.`title_id` = `titleauthors`.`title_id`) and (`titles`.`title_id` = `roysched`.`title_id`) and (`titles`.`ytd_sales` between `roysched`.`lorange` and `roysched`.`hirange`)) group by `authors`.`au_lname`,`authors`.`au_fname`;
+
+-- --------------------------------------------------------
+
+--
+-- Структура для представления `titleview`
+--
+DROP TABLE IF EXISTS `titleview`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `titleview` AS select `titles`.`title` AS `title`,`titleauthors`.`au_ord` AS `au_ord`,`authors`.`au_lname` AS `au_lname`,`titles`.`price` AS `price`,`titles`.`ytd_sales` AS `ytd_sales`,`titles`.`pub_id` AS `pub_id` from ((`authors` join `titles`) join `titleauthors`) where ((`authors`.`au_id` = `titleauthors`.`au_id`) and (`titles`.`title_id` = `titleauthors`.`title_id`));
 
 --
 -- Индексы сохранённых таблиц

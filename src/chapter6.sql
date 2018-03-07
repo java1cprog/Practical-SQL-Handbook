@@ -1,0 +1,32 @@
+SELECT AVG(price) FROM titles;
+SELECT type, AVG(price) FROM titles GROUP BY type;
+SELECT pub_id, COUNT(title_id) FROM titles GROUP BY pub_id;
+SELECT pub_id, type, COUNT(title) FROM titles GROUP BY pub_id, type;
+SELECT pub_id, COUNT(type) FROM titles GROUP BY pub_id;
+SELECT pub_id, type, COUNT(title) FROM titles GROUP BY pub_id;
+
+SELECT pub_id, COUNT(title_id), type, COUNT(title_id) FROM titles GROUP BY pub_id, type;
+SELECT pub_id, COUNT(title_id) FROM titles GROUP BY pub_id;
+SELECT pub_id, type, COUNT(title_id) FROM titles GROUP BY pub_id, type;
+SELECT type, COUNT(title_id) FROM titles GROUP BY type;
+SELECT type, COUNT(*) FROM titles GROUP BY type;
+SELECT type, COUNT(type) FROM titles GROUP BY type;
+SELECT advance, COUNT(*) FROM titles GROUP BY advance;
+SELECT pub_id FROM titles GROUP BY type;
+SELECT distinct pub_id FROM titles;
+SELECT type, AVG(advance), SUM(ytd_sales) FROM titles GROUP BY type;
+SELECT price, AVG(advance) FROM titles GROUP BY price ORDER BY price;
+SELECT type, AVG(price) FROM titles where advance > 5000 GROUP BY type;
+SELECT type, AVG(price) FROM titles GROUP BY type;
+SELECT price, AVG(advance) FROM titles GROUP BY price;
+SELECT type, AVG(price) FROM titles where advance > 5000 GROUP BY type ORDER BY 2;
+SELECT type, COUNT(*) FROM titles GROUP BY type HAVING COUNT(*) > 1;
+SELECT type FROM titles GROUP BY type HAVING type like 'p%';
+SELECT type, COUNT(*), AVG(price) FROM titles GROUP BY type HAVING AVG ( price) >25;
+SELECT type, COUNT(*) FROM titles GROUP BY type HAVING AVG ( price) >25
+SELECT type, COUNT(*) FROM titles GROUP BY type;
+SELECT type, COUNT(*), AVG(price) FROM titles GROUP BY type HAVING AVG(price) > 35;
+SELECT pub_id, SUM(advance), AVG(price) FROM titles GROUP BY pub_id HAVING SUM(advance) > 15000 and AVG(price) > 20 and pub_id > '0800';
+SELECT pub_id, SUM(advance), AVG(price) FROM titles where pub_id > '0800' GROUP BY pub_id HAVING SUM(advance) > 15000 and AVG(price) > 20 ORDER BY pub_id;
+SELECT pub_id, type, COUNT(advance) FROM titles GROUP BY pub_id, type HAVING advance > 1000;
+SELECT isnull(type, 'What?'), COUNT(*) FROM titles GROUP BY type;
